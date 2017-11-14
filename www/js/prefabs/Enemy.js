@@ -37,4 +37,10 @@ SpaceHipster.Enemy.prototype.update = function(){
     if(this.top > this.game.world.height){
         this.kill();
     }
-}
+};
+
+SpaceHipster.Enemy.prototype.damage = function(amount){
+    // When we call damage on an enemy object, call the damage on the parent too.
+    Phaser.Sprite.prototype.damage.call(this, amount);
+    this.play('getHit'); // animation of 'flashing'
+};

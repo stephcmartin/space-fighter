@@ -48,7 +48,8 @@ SpaceHipster.GameState = {
   },
   update: function() {
         // 2 parameters: 'null' is the process callback, and 'this' is the context
-    this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this);
+    this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this); 
+      // ^ this also checks for collision
       this.player.body.velocity.x = 0;
       // listening to when the user touches the screen
       if(this.game.input.activePointer.isDown){
@@ -91,7 +92,7 @@ SpaceHipster.GameState = {
     damageEnemy: function(bullet, enemy){
         // sprites have a method called 'damage', with the amount of health it needs to be 'damage' each time
         // it collides
-        enemy.damage(1);
-        bullet.kill(); // once the bullet kills the enemy it needs to be destroyed
+        enemy.damage(1); // removes one every time it's hit
+        bullet.kill(); // once the enemy has been kill the bullet is 'killed' and reused
     }
 };
