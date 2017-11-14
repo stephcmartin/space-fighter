@@ -15,6 +15,12 @@ SpaceHipster.Enemy = function (game, x, y, key, health, enemyBullets){
     // health is a proerty that all sprites have
     this.health = health;
     this.enemyBullets = enemyBullets;
+    // timer for shoting
+    this.enemyTimer = this.game.time.create(false); // false means that the time timer will not destory after it finishes. It is kept alive
+    // initiate this
+    this.enemyTimer.start();
+    this.scheduleShooting(); // this will schedule the next shooting
+    
 };
 
 // inheritance
@@ -60,4 +66,22 @@ SpaceHipster.Enemy.prototype.damage = function(amount){
         // #4 - how many do we want released
         emitter.start(true, 500, null, 100);
     }
+};
+
+SpaceHipster.Enemy.prototype.scheduleShooting = function (){
+  this.shoot();
+  this.enemyTimer.add(Phaser.Timer.SECOND * 2, this.scheduleShooting, this); // timer for how fast the bullets are shot
+};
+SpaceHipster.Enemy.prototype.shoot = function(){
+    // create pool of objects behavior for enemy bullets
+    var bullet = this.enemyBullets.getFirstExists(false); // gets a dead bullet
+    // if there isn't one:
+    if(!bullet){
+        bullet = new SpaceHipster.EnemyBullet(this.game, this.x, this.bottom);
+        this.enemyBullets.add(bullet);
+    }
+    else {
+        bullet.reset(this.x, this.y);
+    }
+    bullet.body.velocity.y = 100;
 };
