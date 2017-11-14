@@ -36,6 +36,12 @@ SpaceHipster.GameState = {
       this.game.physics.arcade.enable(this.player)
       // make sure palyer touches the edges of the screen
       this.player.body.collideWorldBounds = true;
+      
+      // bullets
+      this.initBullets();
+      // loop for every 5 sections
+      this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND/5, this.createPlayerBullet, this);
+      
   },
   update: function() {
       this.player.body.velocity.x = 0;
@@ -47,5 +53,22 @@ SpaceHipster.GameState = {
           this.player.body.velocity.x = direction * this.PLAYER_SPEED;
       }
   },
-
+    // bullet initiation
+    initBullets: function(){
+        this.playerBullets = this.add.group();
+        this.playerBullets.enableBody = true;
+    },
+    createPlayerBullet: function (){
+        // trying to find the first bullet
+        var bullet = this.playerBullets.getFirstExists(false);
+        // if there is no bullet
+        if(!bullet){
+            console.log('Phew Phew!');
+        }
+        else {
+            // reset position
+            
+        }
+        // set velocity
+    }
 };
