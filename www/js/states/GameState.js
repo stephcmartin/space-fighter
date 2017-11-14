@@ -42,15 +42,13 @@ SpaceHipster.GameState = {
       // loop for every 5 sections
       this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND/5, this.createPlayerBullet, this);
       
-      // create enemy
-      var enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
-      // add this object to the game
-      this.game.add.existing(enemy);
-      enemy.body.velocity.x = 100;
-      enemy.body.velocity.y = 50;
+      // create a group of enemies
+      this.initEnemies();
       
   },
   update: function() {
+        // 2 parameters: 'null' is the process callback, and 'this' is the context
+    this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this);
       this.player.body.velocity.x = 0;
       // listening to when the user touches the screen
       if(this.game.input.activePointer.isDown){
@@ -58,6 +56,7 @@ SpaceHipster.GameState = {
           // create ternary operator - takes three arguments. The first argument is a comparison argument, the second is the result upon a true comparison, and the third is the result upon a false comparison. If it helps you can think of the operator as shortened way of writing an if-else statement.
           var direction = targetX >= this.game.world.centerX ? 1 : -1;
           this.player.body.velocity.x = direction * this.PLAYER_SPEED;
+     // check for overlapping between players and bullets
       }
   },
     // bullet initiation
@@ -79,5 +78,20 @@ SpaceHipster.GameState = {
         }
         // set velocity
         bullet.body.velocity.y = this.BULLET_SPEED;
+    },
+    initEnemies: function(){
+        this.enemies = this.add.group();
+        this.enemies.enableBody = true;
+      var enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
+      // add this object to the game
+      this.enemies.add(enemy);
+      enemy.body.velocity.x = 100;
+      enemy.body.velocity.y = 50;
+    },
+    damageEnemy: function(bullet, enemy){
+        // sprites have a method called 'damage', with the amount of health it needs to be 'damage' each time
+        // it collides
+        enemy.damage(1);
+        bullet.kill(); // once the bullet kills the enemy it needs to be destroyed
     }
 };

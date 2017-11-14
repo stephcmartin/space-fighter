@@ -7,7 +7,7 @@ SpaceHipster.Enemy = function (game, x, y, key, health, enemyBullets){
     // pass it game
     this.game = game;
     //enable physics
-    this.game.physics.arcade.enable(this);
+//    this.game.physics.arcade.enable(this);
     // animation: 25 frames per section, does not repeat itself
     this.animations.add('getHit', [0, 1, 2, 1, 0], 25, false);
     // anchor point to set to middle
