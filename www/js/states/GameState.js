@@ -46,6 +46,8 @@ SpaceHipster.GameState = {
       var enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
       // add this object to the game
       this.game.add.existing(enemy);
+      enemy.body.velocity.x = 100;
+      enemy.body.velocity.y = 50;
       
   },
   update: function() {
