@@ -38,6 +38,14 @@ SpaceHipster.GameState = {
       this.player.body.collideWorldBounds = true;
   },
   update: function() {
+      this.player.body.velocity.x = 0;
+      // listening to when the user touches the screen
+      if(this.game.input.activePointer.isDown){
+          var targetX = this.game.input.activePointer.position.x;
+          // create ternary operator - takes three arguments. The first argument is a comparison argument, the second is the result upon a true comparison, and the third is the result upon a false comparison. If it helps you can think of the operator as shortened way of writing an if-else statement.
+          var direction = targetX >= this.game.world.centerX ? 1 : -1;
+          this.player.body.velocity.x = direction * this.PLAYER_SPEED;
+      }
   },
 
 };
