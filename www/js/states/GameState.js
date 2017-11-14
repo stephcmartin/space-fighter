@@ -33,7 +33,7 @@ SpaceHipster.GameState = {
       // Player
       this.player = this.add.sprite(this.game.world.centerX, this.game.world.height - 50, 'player');
       this.player.anchor.setTo(0.5);
-      this.game.physics.arcade.enable(this.player)
+      this.game.physics.arcade.enable(this.player);
       // make sure palyer touches the edges of the screen
       this.player.body.collideWorldBounds = true;
       
@@ -63,12 +63,14 @@ SpaceHipster.GameState = {
         var bullet = this.playerBullets.getFirstExists(false);
         // if there is no bullet
         if(!bullet){
-            console.log('Phew Phew!');
+            bullet = new SpaceHipster.PlayerBullet(this.game, this.player.x, this.player.top);
+            this.playerBullets.add(bullet);
         }
         else {
             // reset position
-            
+            bullet.reset(this.player.x, this.player.top);
         }
         // set velocity
+        bullet.body.velocity.y = this.BULLET_SPEED;
     }
 };
