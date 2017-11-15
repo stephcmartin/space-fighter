@@ -45,6 +45,8 @@ SpaceHipster.GameState = {
       // create a group of enemies
       this.initEnemies();
       
+      // load level
+      this.loadLevel();
   },
   update: function() {
         // 2 parameters: 'null' is the process callback, and 'this' is the context
@@ -88,11 +90,11 @@ SpaceHipster.GameState = {
         this.enemyBullets = this.add.group();
         this.enemyBullets.enableBody = true;
         
-      this.enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets);
-      // add this object to the game
-      this.enemies.add(this.enemy);
-      this.enemy.body.velocity.x = 100;
-      this.enemy.body.velocity.y = 50;
+//      this.enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets);
+//      // add this object to the game
+//      this.enemies.add(this.enemy);
+//      this.enemy.body.velocity.x = 100;
+//      this.enemy.body.velocity.y = 50;
     },
     damageEnemy: function(bullet, enemy){
         // sprites have a method called 'damage', with the amount of health it needs to be 'damage' each time
@@ -111,5 +113,64 @@ SpaceHipster.GameState = {
             this.enemies.add(enemy);
         }
         enemy.reset(x, y, health, key, scale, speedX, speedY);
+    },
+    loadLevel: function(){
+        this.currentEnemyIndex = 0;
+    this.levelData = {
+    "duration": 35,
+    "enemies": 
+    [
+      {
+        "time": 1,
+        "x": 0.05,
+        "health": 6,
+        "speedX": 20, 
+        "speedY": 50,
+        "key": "greenEnemy",
+        "scale": 2
+      },
+      {
+        "time": 2,
+        "x": 0.1,
+        "health": 3,
+        "speedX": 50, 
+        "speedY": 50,
+        "key": "greenEnemy",
+        "scale": 1
+      },
+      {
+        "time": 3,
+        "x": 0.1,
+        "health": 3,
+        "speedX": 50, 
+        "speedY": 50,
+        "key": "greenEnemy",
+        "scale": 1
+      },
+      {
+        "time": 4,
+        "x": 0.1,
+        "health": 3,
+        "speedX": 50, 
+        "speedY": 50,
+        "key": "greenEnemy",
+        "scale": 3
+      }]
+    }; 
+     this.scheduleNextEnemy();
+    },
+  scheduleNextEnemy: function() {
+    var nextEnemy = this.levelData.enemies[this.currentEnemyIndex];
+    
+    if(nextEnemy){
+      var nextTime = 1000 * ( nextEnemy.time - (this.currentEnemyIndex == 0 ? 0 : this.levelData.enemies[this.currentEnemyIndex - 1].time));
+      
+      this.nextEnemyTimer = this.game.time.events.add(nextTime, function(){
+        this.createEnemy(nextEnemy.x * this.game.world.width, -100, nextEnemy.health, nextEnemy.key, nextEnemy.scale, nextEnemy.speedX, nextEnemy.speedY);
+        
+        this.currentEnemyIndex++;
+        this.scheduleNextEnemy();
+      }, this);
     }
+  }
 };
