@@ -88,11 +88,11 @@ SpaceHipster.GameState = {
         this.enemyBullets = this.add.group();
         this.enemyBullets.enableBody = true;
         
-      var enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets);
+      this.enemy = new SpaceHipster.Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets);
       // add this object to the game
-      this.enemies.add(enemy);
-      enemy.body.velocity.x = 100;
-      enemy.body.velocity.y = 50;
+      this.enemies.add(this.enemy);
+      this.enemy.body.velocity.x = 100;
+      this.enemy.body.velocity.y = 50;
     },
     damageEnemy: function(bullet, enemy){
         // sprites have a method called 'damage', with the amount of health it needs to be 'damage' each time
@@ -103,5 +103,13 @@ SpaceHipster.GameState = {
     killPlayer: function(){
         this.player.kill();
         this.game.state.start('GameState');
+    },
+    createEnemy: function(x , y, health, key, scale, speedX, speedY){
+        var enemy = this.enemies.getFirstExists(false); // get the first one of dead enemies
+        if(!enemy){
+            enemy = new SpaceHipster.Enemy(this.game, x, y, key, health, this.enemyBullets);
+            this.enemies.add(enemy);
+        }
+        enemy.reset(x, y, health, key, scale, speedX, speedY);
     }
 };

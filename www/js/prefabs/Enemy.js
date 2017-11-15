@@ -65,7 +65,17 @@ SpaceHipster.Enemy.prototype.damage = function(amount){
         // #3 - frequencies
         // #4 - how many do we want released
         emitter.start(true, 500, null, 100);
+        this.enemyTimer.pause();
     }
+};
+
+SpaceHipster.Enemy.prototype.reset = function(x, y, health, key, scale, speedX, speedY){
+    Phaser.Sprite.prototype.reset.call(this, x, y, health);
+    this.loadTexture(key); // this will change the image
+    this.scale.setTo(scale);
+    this.body.velocity.x = speedX;
+    this.body.velocity.y = speedY;
+    this.enemyTimer.resume();
 };
 
 SpaceHipster.Enemy.prototype.scheduleShooting = function (){
